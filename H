@@ -1,0 +1,90 @@
+class BlogPost:
+    def __init__(self, title, content, author):
+        self.title = title
+        self.content = content
+        self.author = author
+        self.date_created = None  # You could also use datetime here for real timestamps
+
+    def display_post(self):
+        print(f"Title: {self.title}")
+        print(f"Author: {self.author}")
+        print(f"Created on: {self.date_created}")
+        print(f"Content: {self.content}\n")
+        
+    def update_content(self, new_content):
+        self.content = new_content
+        print(f"Content updated for post: {self.title}")
+        
+    def set_date_created(self, date):
+        self.date_created = date
+
+
+class Blog:
+    def __init__(self, owner_name):
+        self.owner_name = owner_name
+        self.posts = []
+
+    def create_post(self, title, content, author):
+        new_post = BlogPost(title, content, author)
+        self.posts.append(new_post)
+        print(f"New post '{title}' created by {author}")
+
+    def delete_post(self, title):
+        post_to_delete = None
+        for post in self.posts:
+            if post.title == title:
+                post_to_delete = post
+                break
+        if post_to_delete:
+            self.posts.remove(post_to_delete)
+            print(f"Post '{title}' deleted.")
+        else:
+            print(f"Post '{title}' not found.")
+
+    def view_posts(self):
+        if not self.posts:
+            print("No posts available.")
+        else:
+            for post in self.posts:
+                post.display_post()
+
+    def update_post(self, title, new_content):
+        for post in self.posts:
+            if post.title == title:
+                post.update_content(new_content)
+                return
+        print(f"Post '{title}' not found.")
+
+
+# Demonstrating the blog management system
+
+if __name__ == "__main__":
+    my_blog = Blog("John Doe")
+    
+    # Create some blog posts
+    my_blog.create_post("My First Blog Post", "This is the content of my first post.", "John Doe")
+    my_blog.create_post("Python OOP Guide", "Learn how to use Python OOP principles in this blog.", "John Doe")
+    
+    # Set date for posts (simulating real time)
+    from datetime import datetime
+    post_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    my_blog.posts[0].set_date_created(post_date)
+    my_blog.posts[1].set_date_created(post_date)
+    
+    # View all posts
+    print("Viewing all blog posts:\n")
+    my_blog.view_posts()
+
+    # Update a post's content
+    my_blog.update_post("My First Blog Post", "Updated content for my first post.")
+
+    # View all posts after update
+    print("\nViewing all blog posts after content update:\n")
+    my_blog.view_posts()
+
+    # Delete a post
+    my_blog.delete_post("Python OOP Guide")
+    
+    # View all posts after deletion
+    print("\nViewing all blog posts after deletion:\n")
+    my_blog.view_posts()
